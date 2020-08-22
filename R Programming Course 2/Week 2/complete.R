@@ -16,9 +16,23 @@ complete <- function(directory, id = 1:332) {
   ##Obtain files and store them in pollutant_data
   pollutant_data <- list.files(path = "./specdata/", full.name = "TRUE")[id]
   
-  ##Reading all files
-  read_data <- lapply(pollutant_data, read.csv)
+  refined_row <- c() # initialize empty vector
+  count <- 1 # initialize count variable 
   
-  ##Bind all data in read_data together by row
-  combine_data <- do.call(rbind, read_data)
+  for (i in pollutant_data) {
+    
+    ## read each CSV, remove incomplete case from them and store in refined_pollutant_data
+    refined_pollutant_data <- na.omit(read.csv(i))
+    
+    ## nrow returns the number of rows that is not NA (because the value is 1)
+    ## store this counter value in refined_row data data frame
+    refined_row[count] <- nrow(refined_pollutant_data)
+    
+    #increase counter by 1 to go to the next file
+    count <- count + 1
+  }
+  
+  # Generate and print the data frame result
+  refined_list <- data.frame("id" = id, "nobs" = refined_row)
+  print(refined_list)
 }

@@ -26,6 +26,4 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
   
   ##Calculate means of the combine_data list using the specified pollutant value only
   mean(combine_data[,pollutant], na.rm = TRUE)
-  
-  ##Code comment
 }
